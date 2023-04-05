@@ -1,0 +1,9 @@
+.error-div {
+    height: 13rem;
+    width: 75%;
+}
+
+.error-button {
+    background-color: rgb(243, 225, 58);
+    /* border-radius: 25px; */
+}
