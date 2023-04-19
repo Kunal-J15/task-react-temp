@@ -1,44 +1,25 @@
-import React, {useState} from 'react';
-import './App.css';
-import Form from "./components/Form/Form";
-import DivWrapper from './components/UI/DivWrapper';
-import List from './components/Error/List';
-import Error from './components/Error/Error';
+import React, { useState, Fragment } from 'react';
+
+import AddUser from './components/Users/AddUser';
+import UsersList from './components/Users/UsersList';
+
 function App() {
+  const [usersList, setUsersList] = useState([]);
 
-  const [list,updateList] = useState([]);
-  const [error,updateError] = useState("");
-  const formSubmit = (data)=>{
-    if(!data.name.trim()){
-      updateError("Name should not be Null");
-      return;
-    }else if(data.age<=0){
-      updateError("Age should not be 0 or -ve");
-      return;
-    }else if(data.age>150){
-      updateError("Age should not be more than 150");
-      return;
-    }
-    updateError("");
-    updateList((st)=>{
-      return [...st,{...data,id:Math.random()+""}]
-    })
+  const addUserHandler = (uName, uAge) => {
+    setUsersList((prevUsersList) => {
+      return [
+        ...prevUsersList,
+        { name: uName, age: uAge, id: Math.random().toString() },
+      ];
+    });
+  };
 
-  }
-  const resetError = ()=>{
-    updateError("");
-  }
-  const ol = list.map(l=><List key ={l.id}>{`${l.name} ${l.age}`}</List>)
   return (
-    <div className="App">
-      <header className="App-header">
-      <DivWrapper><Form formSubmit={formSubmit}></Form></DivWrapper>
-      {!error && <DivWrapper>
-        {ol}
-      </DivWrapper>}
-      {error && <Error error={error} resetError = {resetError}/>}
-      </header>
-    </div>
+    <Fragment>
+      <AddUser onAddUser={addUserHandler} />
+      <UsersList users={usersList} />
+    </Fragment>
   );
 }
 
